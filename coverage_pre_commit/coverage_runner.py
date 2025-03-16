@@ -1,13 +1,13 @@
 import argparse
 import sys
 import traceback
-from collections.abc import Sequence
+from typing import Sequence, Union
 
 from coverage_pre_commit.common.enums import Providers
 from coverage_pre_commit.util import build_command, check_dependencies, execute_command
 
 
-def main(argv: Sequence[str] | None = None) -> None:  # noqa: D103
+def main(argv: Union[Sequence[str], None] = None) -> None:  # noqa: D103
 	available_providers = list(map(str.lower, Providers.names))
 	provider = Providers.UNITTEST.value
 
@@ -57,7 +57,9 @@ def main(argv: Sequence[str] | None = None) -> None:  # noqa: D103
 
 		if args.provider[0].upper() not in Providers.names and not args.command:
 			raise RuntimeError(
-				f"If you are using an unsupported provider, you must also provide a command.\nYour provider was: {args.provider[0]}\nSupported providers are: {available_providers}",
+				"If you are using an unsupported provider, you must also provide a command.\n"
+				f"Your provider was: {args.provider[0]}\n"
+				f"Supported providers are: {available_providers}",
 			)
 
 		if args.extra_dependencies:

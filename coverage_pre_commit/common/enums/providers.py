@@ -1,3 +1,5 @@
+from types import MappingProxyType
+
 from coverage_pre_commit.common.enums import BetterEnum
 
 
@@ -10,7 +12,7 @@ class Providers(BetterEnum):
 	def __command_prefix(command: str) -> str:
 		return f"coverage run {command}"
 
-	UNITTEST = {
+	UNITTEST = MappingProxyType({
 		"name": "unittest",
 		"command": __command_prefix("-m unittest"),
 		"default_args": [],
@@ -19,8 +21,8 @@ class Providers(BetterEnum):
 			"is_arg": False,
 		},
 		"dependencies": [],
-	}
-	PYTEST = {
+	})
+	PYTEST = MappingProxyType({
 		"name": "pytest",
 		"command": "pytest",
 		"default_args": ["--cov=.", "tests/"],
@@ -29,4 +31,4 @@ class Providers(BetterEnum):
 			"is_arg": True,
 		},
 		"dependencies": ["pytest-cov>=2.0.0"],
-	}
+	})

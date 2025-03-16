@@ -6,6 +6,16 @@ from coverage_pre_commit.common.types import ProviderValue
 
 
 def build_command(provider: ProviderValue, args: Namespace) -> str:
+	"""
+	Build the command to run the tests.
+
+	Args:
+		provider (ProviderValue): The provider to use.
+		args (Namespace): The parsed arguments.
+
+	Returns:
+		str: The command to run the tests.
+	"""
 	command = provider["command"]
 
 	if args.args:
