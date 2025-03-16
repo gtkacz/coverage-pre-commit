@@ -37,7 +37,7 @@ target-version = "py38"
 preview = true
 
 select = ["ALL"]
-ignore = ["E721", "D211", "D212", "W191", "D206", "D404", "D203", "CPY001", "EM102", "TRY003", "PLR0904", "D205", "TID252", "D100", "D200", "S603", "S404", "S602", "TRY301", "C417", "FA100"]
+ignore = ["E721", "D211", "D212", "W191", "D206", "D404", "D203", "CPY001", "EM102", "TRY003", "PLR0904", "D205", "TID252", "D100", "D200", "S603", "S404", "S602", "TRY301", "C417", "FA100", "EM101"]
 extend-select = ["DOC"]
 
 fixable = ["ALL"]

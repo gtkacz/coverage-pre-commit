@@ -1,6 +1,9 @@
 -   id: coverage-pre-commit
     name: coverage
-    description: A pre-commit hook to run coverage on your code.
-    entry: coverage_runner
+    description: A pre-commit hook to check coverage on your code.
+    entry: coverage-pre-commit
     language: python
     types: [python]
+    fail-fast: true
+    stages: [pre-commit, pre-push, manual]
+    args: [--fail-under, --provider, --args, --extra-dependencies, --command]

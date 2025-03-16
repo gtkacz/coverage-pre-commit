@@ -1,18 +1,24 @@
 import argparse
 import sys
 import traceback
-from typing import Sequence, Union
+from typing import Optional, Sequence
 
 from coverage_pre_commit.common.enums import Providers
-from coverage_pre_commit.util import build_command, check_dependencies, execute_command
+from coverage_pre_commit.util import EMPTY_NAMESPACE, build_command, check_dependencies, execute_command, get_metadata
 
 
-def main(argv: Union[Sequence[str], None] = None) -> None:  # noqa: D103
+def main(argv: Optional[Sequence[str]] = None) -> None:  # noqa: D103
 	available_providers = list(map(str.lower, Providers.names))
 	provider = Providers.UNITTEST.value
 
 	try:
 		parser = argparse.ArgumentParser(description="Run tests with coverage and verify coverage thresholds")
+
+		parser.add_argument(
+			"--version",
+			help="Show version information",
+			action="store_true",
+		)
 
 		parser.add_argument(
 			"--provider",
@@ -33,7 +39,7 @@ def main(argv: Union[Sequence[str], None] = None) -> None:  # noqa: D103
 		parser.add_argument(
 			"--fail-under",
 			type=float,
-			required=True,
+			required=False,
 			help="Minimum coverage percentage to fail the build",
 			nargs=1,
 		)
@@ -54,6 +60,17 @@ def main(argv: Union[Sequence[str], None] = None) -> None:  # noqa: D103
 		)
 
 		args = parser.parse_args(argv)
+
+		if args == EMPTY_NAMESPACE:
+			parser.print_help()
+			sys.exit(0)
+
+		if args.version:
+			print(f"coverage_pre_commit {get_metadata('version')}")  # noqa: T201
+			sys.exit(0)
+
+		elif not args.fail_under or (args.fail_under[0] < 0 or args.fail_under[0] > 100):  # noqa: PLR2004
+			raise RuntimeError("The fail-under argument must be passed and must be between 0 and 100.")
 
 		if args.provider[0].upper() not in Providers.names and not args.command:
 			raise RuntimeError(
