@@ -1,0 +1,6 @@
+-   id: coverage-pre-commit
+    name: coverage
+    description: A pre-commit hook to run coverage on your code.
+    entry: coverage_runner
+    language: python
+    types: [python]

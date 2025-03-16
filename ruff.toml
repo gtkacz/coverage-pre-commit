@@ -1,0 +1,71 @@
+exclude = [
+    ".bzr",
+    ".direnv",
+    ".eggs",
+    ".git",
+    ".git-rewrite",
+    ".hg",
+    ".ipynb_checkpoints",
+    ".mypy_cache",
+    ".nox",
+    ".pants.d",
+    ".pyenv",
+    ".pytest_cache",
+    ".pytype",
+    ".ruff_cache",
+    ".svn",
+    ".tox",
+    ".venv",
+    ".vscode",
+    "__pypackages__",
+    "_build",
+    "buck-out",
+    "build",
+    "dist",
+    "node_modules",
+    "site-packages",
+    "venv",
+    "__*.py",
+]
+
+line-length = 120
+indent-width = 4
+
+target-version = "py312"
+
+[lint]
+preview = true
+
+select = ["ALL"]
+ignore = ["E721", "D211", "D212", "W191", "D206", "D404", "D203", "CPY001", "EM102", "TRY003", "PLR0904", "D205", "TID252", "D100", "D200"]
+extend-select = ["DOC"]
+
+fixable = ["ALL"]
+unfixable = []
+
+dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+
+[format]
+preview = true
+
+quote-style = "double"
+docstring-code-format = true
+
+indent-style = "tab"
+
+skip-magic-trailing-comma = false
+
+line-ending = "auto"
+
+[lint.per-file-ignores]
+"__init__.py" = ["F401"]
+"**/{tests,docs,tools}/*" = ["D102", "ANN201", "PT009", "DTZ001", "PT027", "D101", "D100", "CPY001", "C409", "C405", "C409", "BLE001", "S311", "S301", "S403", "D104"]
+
+[lint.flake8-quotes]
+inline-quotes = "double"
+
+[lint.pydocstyle]
+convention = "google"
+
+[lint.pycodestyle]
+max-doc-length = 500
