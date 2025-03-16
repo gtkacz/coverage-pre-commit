@@ -4,3 +4,5 @@
 .coverage
 .tox
 dist
+.qodo
+.ruff_cache
