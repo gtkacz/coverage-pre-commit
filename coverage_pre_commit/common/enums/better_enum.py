@@ -2,10 +2,10 @@ from enum import Enum, EnumMeta, IntEnum, StrEnum
 
 
 class MetaEnum(EnumMeta):
-	def __new__(metacls, cls, bases, classdict, **kwds):
-		prefix = kwds.pop("prefix", "")
+	def __new__(metacls, cls, bases, classdict, **kwargs):
+		prefix = kwargs.pop("prefix", "")
 
-		enum_class = super().__new__(metacls, cls, bases, classdict, **kwds)
+		enum_class = super().__new__(metacls, cls, bases, classdict, **kwargs)
 
 		for member in enum_class.__members__.values():
 			if isinstance(member._value_, str):

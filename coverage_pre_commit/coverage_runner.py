@@ -1,30 +1,38 @@
 import argparse
+import sys
+import traceback
 from collections.abc import Sequence
 
 from coverage_pre_commit.common.enums import Providers
-from coverage_pre_commit.util import check_dependencies, execute_command
+from coverage_pre_commit.util import build_command, check_dependencies, execute_command
 
 
-def main(argv: Sequence[str] | None = None) -> int:  # noqa: D103
+def main(argv: Sequence[str] | None = None) -> None:  # noqa: D103
+	available_providers = list(map(str.lower, Providers.names))
+	provider = Providers.UNITTEST.value
+
 	try:
-		provider = Providers.UNITTEST.value
-
-		parser = argparse.ArgumentParser()
+		parser = argparse.ArgumentParser(description="Run tests with coverage and verify coverage thresholds")
 
 		parser.add_argument(
 			"--provider",
-			default=provider["name"],
+			type=str,
+			default=[provider["name"]],
+			help=f"Test provider ({''.join(available_providers)}, or custom)",
 			nargs=1,
 		)
 
 		parser.add_argument(
 			"--args",
-			required=False,
+			type=str,
+			default=[""],
+			help="Additional arguments to pass to the test command",
 			nargs=1,
 		)
 
 		parser.add_argument(
 			"--fail-under",
+			type=float,
 			required=True,
 			help="Minimum coverage percentage to fail the build",
 			nargs=1,
@@ -32,46 +40,44 @@ def main(argv: Sequence[str] | None = None) -> int:  # noqa: D103
 
 		parser.add_argument(
 			"--extra-dependencies",
+			type=str,
 			required=False,
 			nargs=1,
 		)
 
 		parser.add_argument(
 			"--command",
+			type=str,
 			required=False,
+			help="Custom command to run tests (required if provider is not supported)",
 			nargs=1,
 		)
 
 		args = parser.parse_args(argv)
 
-		if args.provider[0].upper() in Providers.names:
-			provider = Providers[args.provider[0]].value
-
-			check_dependencies(provider["dependencies"])
-
-			args.provider = provider["name"]
-			args.args = provider["default_args"]
-
-		elif not args.command[0]:
+		if args.provider[0].upper() not in Providers.names and not args.command:
 			raise RuntimeError(
-				f"If you are using an unsupported provider, you must also provide a command.\nYour provider was: {args.provider[0]}\nSupported providers are: {list(map(str.lower, Providers.names))}",
+				f"If you are using an unsupported provider, you must also provide a command.\nYour provider was: {args.provider[0]}\nSupported providers are: {available_providers}",
 			)
 
-		if args.extra_dependencies[0]:
+		if args.extra_dependencies:
 			check_dependencies(args.extra_dependencies[0].split(","))
 
-		if args.command[0]:
-			return execute_command(args.command[0])
+		if args.command:
+			sys.exit(execute_command(args.command[0]))
 
-		if not args.args:
-			args.args = "".join(args.args)
+		provider = Providers[args.provider[0].upper()].value
 
-		command = f"{provider['command']} {args.args} {'&& ' if not provider['fail_command']['is_arg'] else ''}{provider['fail_command']['command'].format(args.fail_under[0])}"
-		return execute_command(command)
+		check_dependencies(provider["dependencies"])
+
+		args.provider = provider["name"]
+		args.args = (provider["default_args"] or []) + (args.args or [])
+
+		sys.exit(execute_command(build_command(provider, args)))
 
 	except Exception as e:
-		print(e)
-		return 1
+		traceback.print_exception(type(e), e, e.__traceback__)
+		sys.exit(1)
 
 
 if __name__ == "__main__":
