@@ -1,11 +1,32 @@
-from coverage_pre_commit.common.enums.__better_enum import __BetterStrEnum
+from coverage_pre_commit.common.enums import BetterEnum
 
 
-class Providers(__BetterStrEnum):
+class Providers(BetterEnum):
 	"""
 	Enum for `coverage` providers.
 	"""
 
-	UNITTEST = "unittest"
-	PYTEST = "pytest"
-	TOX = "tox"
+	@staticmethod
+	def __command_prefix(command: str) -> str:
+		return f"coverage run {command}"
+
+	UNITTEST = {
+		"name": "unittest",
+		"command": __command_prefix("-m unittest"),
+		"default_args": [],
+		"fail_command": {
+			"command": "coverage report --fail-under={}",
+			"is_arg": False,
+		},
+		"dependencies": [],
+	}
+	PYTEST = {
+		"name": "pytest",
+		"command": "pytest",
+		"default_args": ["--cov=.", "tests/"],
+		"fail_command": {
+			"command": "--cov-fail-under={}",
+			"is_arg": True,
+		},
+		"dependencies": ["pytest-cov>=2.0.0"],
+	}
