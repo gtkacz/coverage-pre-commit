@@ -6,5 +6,6 @@
     always_run: true
     require_serial: true
     fail_fast: true
+    pass_filenames: false
     stages: [pre-commit, pre-push, manual]
     args: [--fail-under=80]
