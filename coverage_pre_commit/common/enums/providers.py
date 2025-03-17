@@ -30,5 +30,5 @@ class Providers(BetterEnum):
 			"command": "--cov-fail-under={}",
 			"is_arg": True,
 		},
-		"dependencies": ["pytest-cov>=2.0.0"],
+		"dependencies": ["pytest-cov~=6.0.0"],
 	})
