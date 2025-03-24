@@ -1,8 +1,8 @@
 import configparser
-from typing import Dict, Optional, Union
+from typing import Optional, Union
 
 
-def get_metadata(key: Optional[str] = None) -> Union[str, Dict[str, str]]:
+def get_metadata(key: Optional[str] = None) -> Union[str, dict[str, str]]:
 	"""
 	Retrieve metadata from setup.cfg. If key is provided, return the value of that key.
 	Otherwise, return the entire metadata dictionary.

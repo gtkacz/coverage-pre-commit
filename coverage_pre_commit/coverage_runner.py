@@ -1,7 +1,8 @@
 import argparse
 import sys
 import traceback
-from typing import Optional, Sequence
+from collections.abc import Sequence
+from typing import Optional
 
 from coverage_pre_commit.common.enums import Providers
 from coverage_pre_commit.util import EMPTY_NAMESPACE, build_command, check_dependencies, execute_command, get_metadata
