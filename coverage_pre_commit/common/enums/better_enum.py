@@ -1,5 +1,4 @@
 from enum import Enum, EnumMeta, IntEnum, StrEnum
-from typing import List
 
 
 class MetaEnum(EnumMeta):
@@ -20,7 +19,7 @@ class MetaEnum(EnumMeta):
 		return enum_class
 
 	@property
-	def names(cls) -> List[str]:
+	def names(cls) -> list[str]:
 		"""
 		Returns the names of the enum.
 
@@ -30,7 +29,7 @@ class MetaEnum(EnumMeta):
 		return cls._member_names_
 
 	@property
-	def values(cls) -> List[str]:
+	def values(cls) -> list[str]:
 		"""
 		Returns the values of the enum.
 

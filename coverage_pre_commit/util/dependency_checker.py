@@ -1,9 +1,8 @@
 import subprocess
 import sys
-from typing import List
 
 
-def check_dependencies(dependencies: List[str]) -> None:
+def check_dependencies(dependencies: list[str]) -> None:
 	"""
 	Check if the dependencies are installed, if not install them.
 

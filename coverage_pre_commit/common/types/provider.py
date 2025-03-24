@@ -1,4 +1,4 @@
-from typing import List, TypedDict
+from typing import TypedDict
 
 
 class FailCommand(TypedDict):
@@ -17,6 +17,6 @@ class ProviderValue(TypedDict):
 
 	name: str
 	command: str
-	default_args: List[str]
-	fail_command: List[FailCommand]
-	dependencies: List[str]
+	default_args: list[str]
+	fail_command: list[FailCommand]
+	dependencies: list[str]
