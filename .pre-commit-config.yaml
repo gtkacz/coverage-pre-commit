@@ -23,13 +23,13 @@ repos:
   hooks:
     - id: mypy
 - repo: https://github.com/astral-sh/ruff-pre-commit
-  rev: v0.11.2
+  rev: v0.11.5
   hooks:
     - id: ruff
       args: [ --fix ]
     - id: ruff-format
 - repo: https://github.com/gitleaks/gitleaks
-  rev: v8.24.2
+  rev: v8.24.3
   hooks:
     - id: gitleaks
 - repo: https://github.com/gtkacz/coverage-pre-commit
